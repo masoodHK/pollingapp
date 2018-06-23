@@ -1,0 +1,25 @@
+:root {
+    --background: #222;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+footer {
+    background: #222;
+    color: #aaa;
+    text-align: center;
+}
+nav {
+    background : -webkit-linear-gradient(90deg, #222, #aaa);
+    background : -moz-linear-gradient(90deg, #222, #aaa);
+    background : -o-linear-gradient(90deg, #222, #aaa);
+    background : linear-gradient(90deg, #222, #aaa);
+}
+nav ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+    flex-direction: row;
+}
