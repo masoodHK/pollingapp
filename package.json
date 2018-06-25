@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "parcel": "^1.9.3"
+  },
+  "name": "pollingapp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/masoodHK/pollingapp.git",
+  "author": "Masood HK <masood_hasan@msn.com>",
+  "license": "MIT"
+}
