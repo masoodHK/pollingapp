@@ -22,7 +22,13 @@
     border-radius: 0; 
 }
 
+.ui.modal {
+    border-top: 5px solid var(--foreground);
+}
 
+#addPoll {
+    margin: 20px 0;
+}
 
 * {
     margin:0; padding: 0;

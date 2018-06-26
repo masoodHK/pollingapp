@@ -65,26 +65,53 @@ function signOut() {
 }
 
 function addPoll(){
-
+    const question = document.getElementById('question').value;
+    const options = document.getElementsByName('options');
+    let poll = {
+        question,
+        author: auth.currentUser.displayName,
+        option = {}
+    }
+    for(let i = 0; i < 4; i++) {
+        poll.option[options[i].value] = 0;
+    }
+    database.ref(`users/${auth.currentUser.uid}/polls`).push().set(poll);
+    database.ref(`polls`).push().set(poll);
+    location.reload();
+    return false;
 }
 
-function viewPoll(pid) {
-    const poll = database.ref(`users/${auth.currentUser.uid}/${pid}`)
-    poll.on('child_added', snapshot => {
-
+function viewPolls() {
+    const accordion = $('.ui.styled.accordion');
+    database.ref(`polls`).on('child_added', snapshot => {
+        var poll = renderPoll(snapshot.val(), snapshot.key);
+        accordion.append(poll);
     });
+}
+
+function renderPoll(data, key) {
+    return `
+    <div class="title">
+        <i class="dropdown icon"></i>
+        ${data.question}
+        <span style="margin-left:auto">
+            <button class="ui button" onClick="deletePoll('${key}')">Delete Poll</button>
+        </span>
+    </div>
+    <div class="content">
+        Made by: ${data.author}
+    </div>
+    `
 }
 
 function showChart(data = null) {
 
 }
 
-function updatePoll(pid = null) {
-
-}
-
 function deletePoll(pid = null) {
-    
+    database.ref(`users/${auth.currentUser.uid}/polls/${pid}`).remove();
+    database.ref(`polls/${pid}`).remove();
+    location.reload();
 }
 
 function changeState (){
@@ -100,16 +127,12 @@ function changeState (){
                     <a onclick="signOut()" class="ui item">Sign Out</a>
                 </li>
             `);
-            addButton.html(`<button class="ui button">Add New Poll</button>`)
-            // document.body.onload = showTasks();
+            addButton.html(`<button class="ui button" onClick="showAddPollModal()">Add New Poll</button>`)
+            document.body.onload = viewPolls();
             // document.querySelector('main').setAttribute('class', 'display');
         }
     });
 }
-
-$(document).ready(() => {
-    $('.ui.modal').modal();
-})
 
 function showLoginModal() {
     $('.ui.modal#login')
@@ -125,6 +148,12 @@ $('div.ui.styled.accordion').accordion({
 
 function showSignUpModal() {
     $('.ui.modal#sign-up')
+        .modal('show')
+    ;
+}
+
+function showAddPollModal() {
+    $('.ui.modal#addNewPoll')
         .modal('show')
     ;
 }
