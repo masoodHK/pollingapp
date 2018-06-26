@@ -1,4 +1,4 @@
-const cacheVersion = 'v2.4';
+const cacheVersion = 'v3.2';
 const cacheName = `app-${cacheVersion}`;
 const files = [
     'index.html',
@@ -7,7 +7,7 @@ const files = [
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(cacheFiles())
+    event.waitUntil(updateCache(event.request))
     self.skipWaiting(); 
 });
 
@@ -26,7 +26,6 @@ self.addEventListener('fetch', function(event) {
         });
       })
     );
-    event.waitUntil(updateCache(event.request));
 });
 function cacheFiles() {
     return caches.open(cacheName)

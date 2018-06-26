@@ -1,39 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Polling App</title>
-    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.2/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/taucharts@1/build/production/tauCharts.min.css">
     <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
     <header>
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="javascript:void(0)">Login</a></li>
-                    <li><a href="javascript:void(0)">Register</a></li>
+        <nav class="ui menu">
+            <div class="container">
+                <a class="item">
+                    <h1>Polling App</h1>
+                </a>
+                <ul class="right menu">
+                    <li>
+                        <button onclick="showLoginModal()" class="ui button">Log In</button>
+                    </li>
+                    <li>
+                        <button onclick="showSignUpModal()" class="ui button">Register</button>
+                    </li>
                 </ul>
-            </nav>
-        </div>
+            </div>
+        </nav>
     </header>
     <main>
         <div class="container">
-            <h1>Polling App</h1>
+            <div id="addPoll">
+
+            </div>
+            <div class="ui styled accordion">
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    What is a dog?
+                </div>
+                <div class="content">
+                    <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a
+                        welcome guest in many households across the world.</p>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    What kinds of dogs are there?
+                </div>
+                <div class="content">
+                    <p>There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed
+                        of dog that they find to be compatible with their own lifestyle and desires from a companion.</p>
+                </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    How do you acquire a dog?
+                </div>
+                <div class="content">
+                    <p>Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
+                    <p>A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you
+                        to assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding
+                        your dog from a shelter, helps give a good home to a dog who may not find one so readily.</p>
+                </div>
+            </div>
         </div>
     </main>
     <footer>
         <p>Created By: Masood Hasan Khan</p>
     </footer>
+
+    <div class="ui modal" id="login">
+        <i class="close icon"></i>
+        <div class="header">
+            Log In
+        </div>
+        <div class="content">
+            <div class="error-message"></div>
+            <form class="ui form" id="log-in-form" onsubmit="return false">
+                <div class="field">
+                    <label>E-mail</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="E-mail">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="Password">
+                </div>
+                <button class="ui button" type="submit" onclick="logIn()">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="ui modal" id="sign-up">
+        <i class="close icon"></i>
+        <div class="header">
+            Sign Up
+        </div>
+        <div class="content">
+            <div class="error-message"></div>
+            <form class="ui form" id="sign-up-form" onsubmit="return false">
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" id="username" placeholder="Username">
+                </div>
+                <div class="field">
+                    <label>E-mail</label>
+                    <input type="email" id="email" placeholder="E-mail">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Password">
+                </div>
+                <div class="field">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm Password">
+                </div>
+                <button class="ui button" type="submit" onclick="signUp()">Submit</button>
+            </form>
+        </div>
+    </div>
+
     <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/d3js/3.5.17/d3.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/taucharts@1/build/production/tauCharts.min.js" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="semantic/dist/semantic.min.js"></script>
-    <script src="assets/auth.js"></script>    
-    <script src="assets/main.js"></script>    
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.2/semantic.min.js"></script>
+    <script src="assets/auth.js"></script>
+    <script src="assets/main.js"></script>
 </body>
+
 </html>
