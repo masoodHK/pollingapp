@@ -70,7 +70,7 @@ function addPoll(){
     let poll = {
         question,
         author: auth.currentUser.displayName,
-        option = {}
+        option: {}
     }
     for(let i = 0; i < 4; i++) {
         poll.option[options[i].value] = 0;

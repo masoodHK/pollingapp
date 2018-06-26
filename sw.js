@@ -1,4 +1,4 @@
-const cacheVersion = 'v3.5';
+const cacheVersion = 'v3.6';
 const cacheName = `app-${cacheVersion}`;
 const files = [
     'index.html',
