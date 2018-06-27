@@ -26,6 +26,10 @@
     border-top: 5px solid var(--foreground);
 }
 
+.title > h4 {
+    display: inline;
+}
+
 #addPoll {
     margin: 20px 0;
 }

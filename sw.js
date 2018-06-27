@@ -1,4 +1,4 @@
-const cacheVersion = 'v3.6';
+const cacheVersion = 'v3.9.4';
 const cacheName = `app-${cacheVersion}`;
 const files = [
     'index.html',
@@ -20,6 +20,7 @@ self.addEventListener('fetch', function(event) {
       caches.open(cacheName).then(function(cache) {
         return cache.match(event.request).then(function (response) {
           return response || fetch(event.request).then(function(response) {
+            console.log(response);
             cache.put(event.request, response.clone());
             return response;
           });
@@ -37,7 +38,6 @@ async function cacheFilesAsync() {
     let cache = await caches.open(cacheName);
     cache.addAll(files);
 }
-
 function deleteKeys() {
     return caches.keys()
         .then(keys => Promise.all(
@@ -49,7 +49,6 @@ function deleteKeys() {
             })
         ))
 }
-
 function updateCache(request) {
     return caches.open(cacheName).then(function (cache) {
         return fetch(request).then(function (response) {
@@ -58,7 +57,6 @@ function updateCache(request) {
         });
     });
 }
-
 async function responseAsync(request) {
     let cache = await caches.open(cacheName)
     let response = await cache.match(event.request)

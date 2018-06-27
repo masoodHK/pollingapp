@@ -70,10 +70,13 @@ function addPoll(){
     let poll = {
         question,
         author: auth.currentUser.displayName,
-        option: {}
+        option: {},
+        results: {}
     }
+
     for(let i = 0; i < 4; i++) {
-        poll.option[options[i].value] = 0;
+        poll.option[`option${i + 1}`] = options[i].value;
+        poll.results[`option${i + 1}`] = 0;
     }
     database.ref(`users/${auth.currentUser.uid}/polls`).push().set(poll);
     database.ref(`polls`).push().set(poll);
@@ -81,30 +84,69 @@ function addPoll(){
     return false;
 }
 
-function viewPolls() {
+function viewPolls(user = null) {
     const accordion = $('.ui.styled.accordion');
+    let poll
     database.ref(`polls`).on('child_added', snapshot => {
-        var poll = renderPoll(snapshot.val(), snapshot.key);
+        if(user){
+            poll = renderPoll(snapshot.val(), snapshot.key, user);
+        }
+        else {
+            poll = renderPoll(snapshot.val(), snapshot.key);
+        }
         accordion.append(poll);
     });
 }
 
-function renderPoll(data, key) {
-    return `
-    <div class="title">
-        <i class="dropdown icon"></i>
-        ${data.question}
-        <span style="margin-left:auto">
-            <button class="ui button" onClick="deletePoll('${key}')">Delete Poll</button>
-        </span>
-    </div>
-    <div class="content">
-        Made by: ${data.author}
-    </div>
-    `
+function renderPoll(data, key, user = null) {
+    let pollOptions = ``
+    for(let i = 0; i < 4; i++) {
+        pollOptions += `
+            <label for="${i}">${data.option[`option${i + 1}`]}</label>
+            <input type="radio" class="pollOption" name="${i}">
+            <br>
+        `
+    }
+    if(user) {
+        return `
+            <div class="title">
+                <i class="dropdown icon"></i>
+                <h4>
+                    ${data.question}
+                    <br>                
+                    <small>Made by: ${data.author}</small>
+                </h4>
+                <span style="margin-left:auto">
+                    <button class="ui button" onClick="deletePoll('${key}')">Delete Poll</button>
+                </span>
+            </div>
+            <div class="content">
+                <div class="result">
+                    ${pollOptions}
+                </div>
+            </div>
+        `
+    }
+    else {
+        return `
+            <div class="title">
+                <i class="dropdown icon"></i>
+                <h4>
+                    ${data.question}
+                    <br>                
+                    <small>Made by: ${data.author}</small>
+                </h4>
+            </div>
+            <div class="content">
+                <div class="result">
+                    ${pollOptions}
+                </div>
+            </div>
+        `
+    }
 }
 
-function showChart(data = null) {
+function showResult() {
 
 }
 
@@ -128,8 +170,10 @@ function changeState (){
                 </li>
             `);
             addButton.html(`<button class="ui button" onClick="showAddPollModal()">Add New Poll</button>`)
+            document.body.onload = viewPolls(user);
+        }
+        else {
             document.body.onload = viewPolls();
-            // document.querySelector('main').setAttribute('class', 'display');
         }
     });
 }
@@ -166,4 +210,3 @@ if('serviceWorker' in navigator) {
 }
 
 changeState();
-
