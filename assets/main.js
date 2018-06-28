@@ -102,9 +102,12 @@ function renderPoll(data, key, user = null) {
     let pollOptions = ``
     for(let i = 0; i < 4; i++) {
         pollOptions += `
-            <label for="${i}">${data.option[`option${i + 1}`]}</label>
-            <input type="radio" class="pollOption" name="${i}">
-            <br>
+            <div class="field">
+                <div class="ui radio checkbox">
+                    <input type="radio" name="pollOption" value="${i + 1}" tabindex="0">
+                    <label>${data.option[`option${i + 1}`]}</label>
+                </div>
+            </div>
         `
     }
     if(user) {
@@ -121,8 +124,11 @@ function renderPoll(data, key, user = null) {
                 </span>
             </div>
             <div class="content">
-                <div class="result">
-                    ${pollOptions}
+                <div class="ui form">
+                    <div class="grouped fields">
+                        ${pollOptions}
+                        <button class="ui button" onclick="showResults(this, '${key}')">Submit</button>
+                    </div>
                 </div>
             </div>
         `
@@ -138,16 +144,37 @@ function renderPoll(data, key, user = null) {
                 </h4>
             </div>
             <div class="content">
-                <div class="result">
-                    ${pollOptions}
+                <div class="ui form">
+                    <div class="grouped fields">
+                        ${pollOptions}
+                        <button class="ui button" onclick="showResults(this, '${key}')">Submit</button>
+                    </div>
                 </div>
             </div>
         `
     }
 }
 
-function showResult() {
-
+function showResults(element, key) {
+    let el = $(element).parent().parent();
+    let option = $("input:radio[name=pollOption]:checked").val();
+    let results = {};
+    const dataRefPoll = database.ref(`polls/${key}`);
+    var data;
+    dataRefPoll.on('value', snapshot => {
+        data = snapshot.val().results[`option${option}`] + 1
+        console.log(data)
+    });
+    results[`option${option}`] = data
+    for(let i = 0; i < 4; i++) {
+        if(i == option) {
+            results[`option${i + 1}`] = data
+        }
+        else {
+            results[`option${i + 1}`] = 0;
+        }
+    }
+    firebase.database().ref(`polls/${key}/results`).set(results);
 }
 
 function deletePoll(pid = null) {
