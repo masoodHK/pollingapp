@@ -158,23 +158,23 @@ function renderPoll(data, key, user = null) {
 function showResults(element, key) {
     let el = $(element).parent().parent();
     let option = $("input:radio[name=pollOption]:checked").val();
-    let results = {};
     const dataRefPoll = database.ref(`polls/${key}`);
-    var data;
+    let dataRes, pollResult = "", options;
     dataRefPoll.on('value', snapshot => {
-        data = snapshot.val().results[`option${option}`] + 1
-        console.log(data)
+        dataRes = snapshot.val().results
+        options = snapshot.val().option
+        dataRes[`option${option}`]++;
     });
-    results[`option${option}`] = data
     for(let i = 0; i < 4; i++) {
-        if(i == option) {
-            results[`option${i + 1}`] = data
-        }
-        else {
-            results[`option${i + 1}`] = 0;
-        }
+        pollResult += `<p>${options[`option${i + 1}`]} : ${dataRes[`option${i + 1}`]}</p>`
     }
-    firebase.database().ref(`polls/${key}/results`).set(results);
+    database.ref(`polls/${key}/results`).set(dataRes);
+    el.html(
+        `
+            <h4>Thank you for taking part in this poll. Here are the results</h4>
+            ${pollResult}
+        `
+    );
 }
 
 function deletePoll(pid = null) {
